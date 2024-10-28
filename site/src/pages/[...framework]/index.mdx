@@ -13,7 +13,6 @@ import TrendDemo from './_demos/Trend'
 import Match from '@/components/Match.astro'
 import Meta from '@/components/Meta.astro'
 import Type from '@/components/Type.astro'
-import WillChange from './_will-change.mdx'
 import Heading from '@/components/Heading.astro'
 import Union from '@/components/Union.astro'
 import Link from '@/components/Link.astro'
@@ -217,14 +216,6 @@ that may occur in the same update. This can prevent potentially unwanted animati
 Can be set to `false` to disable all animations and finish any current ones.
 See the [input example](/examples/#input) for a usage scenario.
 
-<Match><Fragment slot="vanilla" />
-<h3>
-	<code>willChange<Type>: boolean</Type></code>
-	<Meta>Default: `false`</Meta>
-</h3>
-
-<WillChange />
-</Match>
 
 <h3 id="respect-motion-preference">
 	<code>respectMotionPreference<Type>: boolean</Type></code>
@@ -252,6 +243,26 @@ This lets you coordinate transitions for multiple `<number-flow>` elements
 See the [group example](/examples/#group) for a demo.
 </Match>
 
+
+<Match>
+<Fragment slot="vanilla">
+---
+<Heading value="Attributes" />
+<h3><code>data-will-change<Type>: boolean</Type></code></h3>
+</Fragment>
+<h3>
+	<code>willChange<Type>: boolean</Type></code>
+	<Meta>Default: `false`</Meta>
+</h3>
+</Match>
+
+If set, NumberFlow applies [`will-change` properties](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change) to relevant elements.
+This can be useful if:
+* Your number is guaranteed to change frequently
+* You experience text misalignment when a transition completes
+
+Note that "excessive use of `will-change` will result in excessive memory use" (source: [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change)).
+
 <Match vue>
 ---
 <Heading value="Emits"/>
@@ -273,15 +284,6 @@ would trigger for animations on the <Match><Fragment slot="vanilla">`<number-flo
 <h3><code><Match react="onAnimationsFinish" vue="animationsfinish" svelte="animationsfinish" vanilla="animationsfinish" /><Type>: (e: CustomEvent) => void</Type></code></h3>
 
 Triggered when update animations finish.
-
-<Match vanilla>
----
-<Heading value="Attributes"/>
-
-<h3><code>data-will-change<Type>: boolean</Type></code></h3>
-
-<WillChange />
-</Match>
 
 ---
 
