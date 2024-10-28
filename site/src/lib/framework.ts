@@ -24,12 +24,13 @@ export const FRAMEWORKS = {
 			'https://codesandbox.io/p/devbox/number-flow-svelte-xshsw4?file=%2Fsrc%2Froutes%2F%2Bpage.svelte',
 		lightColor: '#FF3E00',
 		darkColor: '#F96844'
+	},
+	vanilla: {
+		name: 'Vanilla',
+		sandbox: '',
+		lightColor: '#F7DF1E',
+		darkColor: '#F7DF1E'
 	}
-	// vanilla: {
-	// 	name: 'Vanilla',
-	// 	lightColor: '#F7DF1E',
-	// 	darkColor: '#F7DF1E'
-	// }
 } satisfies Record<string, FrameworkData>
 
 export type Framework = keyof typeof FRAMEWORKS

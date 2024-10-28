@@ -30,7 +30,7 @@ type Props = {
 const { title: _title, description } = Astro.props
 const title = _title.replaceAll(
 	'{{name}}',
-	'NumberFlow' + (framework ? ' for ' + framework.name : '')
+	'NumberFlow' + (framework && frameworkId !== 'vanilla' ? ' for ' + framework.name : '')
 )
 
 const app = {

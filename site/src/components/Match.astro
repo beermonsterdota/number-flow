@@ -13,10 +13,14 @@ type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> &
 	)
 
 // We can't use a loop here because Astro needs the slot names to be static strings
-const { as: _Tag, react, vue, svelte, ...props } = Astro.props
+const { as: _Tag, react, vue, svelte, vanilla, ...props } = Astro.props
 let Tag = _Tag ?? (Object.keys(props).length ? 'div' : Fragment)
 const framework = getFramework(Astro.params)
-const noBool = typeof react !== 'boolean' && typeof vue !== 'boolean' && typeof svelte !== 'boolean'
+const noBool =
+	typeof react !== 'boolean' &&
+	typeof vue !== 'boolean' &&
+	typeof svelte !== 'boolean' &&
+	typeof vanilla !== 'boolean'
 ---
 
 <Tag {...props}
