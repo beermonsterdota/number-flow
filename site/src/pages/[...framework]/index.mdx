@@ -10,6 +10,7 @@ import IsolateDemo from './_demos/Isolate'
 import ContinuousDemo from './_demos/Continuous'
 import TabularNumsDemo from './_demos/TabularNums'
 import TrendDemo from './_demos/Trend'
+import Comp from '@/components/Comp.mdx'
 import Match from '@/components/Match.astro'
 import Meta from '@/components/Meta.astro'
 import Type from '@/components/Type.astro'
@@ -238,8 +239,7 @@ flow.update(/* ... */)
 flow.didUpdate()
 ```
 
-This lets you coordinate transitions for multiple `<number-flow>` elements
- on the same line.
+This lets you coordinate transitions for multiple <Comp/> elements on the same line.
 See the [group example](/examples/#group) for a demo.
 </Match>
 
@@ -278,7 +278,7 @@ Triggered when update animations start.
 <Match vue react vanilla>
 Not to be confused with the built-in
 <Match react>`onAnimationStart`</Match><Match vue vanilla>[`animationstart` event](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationstart_event)</Match>, which
-would trigger for animations on the <Match><Fragment slot="vanilla">`<number-flow>`</Fragment>`<NumberFlow>`</Match> element itself.
+would trigger for animations on the <Comp/> element itself.
 </Match>
 
 <h3><code><Match react="onAnimationsFinish" vue="animationsfinish" svelte="animationsfinish" vanilla="animationsfinish" /><Type>: (e: CustomEvent) => void</Type></code></h3>
@@ -368,5 +368,5 @@ import { renderToString } from 'number-flow'
 
 * [Scientific](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#scientific) and [engineering](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#engineering) notations aren't supported.
 * Selected text inside the number will not respect color changes from `::selection`, if any.
-* Backgrounds and borders on <Match><Fragment slot="vanilla">`<number-flow>`</Fragment>`<NumberFlow>`</Match> won't scale smoothly during transitions.
+* Backgrounds and borders on <Comp/> won't scale smoothly during transitions.
 <Match react>I'd recommend using Framer Motion for these, as it's more composable than any built-in solution could be. See the Framer Motion layout animations [example](/examples#framer-motion).</Match>
