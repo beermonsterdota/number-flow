@@ -1,4 +1,4 @@
-[![NumberFlow](https://number-flow.barvian.me/preview.webp)](https://number-flow.barvian.me/svelte)
+[![NumberFlow](https://number-flow.barvian.me/preview.webp)](https://number-flow.barvian.me/vanilla)
 
 # NumberFlow
 
