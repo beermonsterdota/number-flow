@@ -70,20 +70,18 @@ import NumberFlow from '@number-flow/svelte'
 <Match vanilla>
 ```html
 <!-- Basic usage -->
-<number-flow />
+<number-flow
+	locales='"en-US"'
+	format='{ "notation": "compact" }'
+></number-flow>
 
 <script type="module">
-	import NumberFlow, { define } from 'number-flow'
-	// Call once to define the element globally:
-	define('number-flow', NumberFlow)
+	import 'number-flow' // only needed once per bundle
 
 	const flow = document.querySelector('number-flow')
+	// Sets the initial value. Subsequent calls to .update()
+	// will trigger animations:
 	flow.update(123)
-	// Or with formatting:
-	flow.update(123, {
-		locales: 'en-US', // Intl.NumberFormat locales
-		format: { notation: 'compact' } // Intl.NumberFormat options
-	})
 </script>
 ```
 </Match>
@@ -95,15 +93,16 @@ for a full list of `locales` and `format` options.
 ---
 
 <Match>
-<Heading slot="vanilla" value="Properties" />
+<Heading slot="vanilla" value="Attributes" />
 <Heading value="Props" />
 </Match>
 
-NumberFlow accepts additional prop<Match vanilla>ertie</Match>s to customize its transitions:
+NumberFlow accepts additional <Match vanilla="attributes" default="props" /> to customize its transitions<Match vanilla="." default=":"/>
+<Match vanilla>Make sure to use JSON strings for all of them. They're also available as camelCased properties in JS:</Match>
 
 ### Timings
 
-There are three prop<Match vanilla>ertie</Match>s to customize the animation timings. Each accept an [`EffectTiming`](https://developer.mozilla.org/en-US/docs/Web/API/AnimationEffect/getTiming#return_value) object:
+There are three <Match vanilla="attributes" default="props" /> to customize the animation timings. Each accept an [`EffectTiming`](https://developer.mozilla.org/en-US/docs/Web/API/AnimationEffect/getTiming#return_value) object:
 
 <TimingsDemo client:visible defaultValue='code'>
 <Match react>
@@ -158,14 +157,17 @@ There are three prop<Match vanilla>ertie</Match>s to customize the animation tim
 ```
 </Match>
 <Match vanilla>
-```ts
-// Used for layout-related transforms:
-flow.transformTiming = { duration: 700, easing: 'linear(...)' }
-// Used for the digit spin animations.
-// Will fall back to `transformTiming` if unset:
-flow.spinTiming = { duration: 700, easing: 'linear(...)' }
-// Used for fading in/out characters:
-flow.opacityTiming = { duration: 350, easing: 'ease-out' }
+```html
+<!--
+	`transform-timing` is used for layout-related transforms.  
+	`spin-timing` is used for the digit spin animations. It will fall back to `transform-timing` if unset.  
+	`opacity-timing` is used for fading characters in or out.
+-->
+<number-flow
+	transform-timing='{ "duration": 700, "easing": "linear(...)" }'
+	spin-timing='{ "duration": 700, "easing": "linear(...)" }'
+	opacity-timing='{ "duration": 350, "easing": "ease-out" }'
+>
 ```
 </Match>
 </TimingsDemo>
@@ -174,7 +176,7 @@ For spring-based easings, I'd recommend [Kevin Grajeda's generator](https://www.
 or [easing.dev](https://www.easing.dev/).
 
 <h3>
-	<code>trend<Type>: <Union types={["boolean", "'increasing'", "'decreasing'"]} /></Type></code>
+	<code>trend<Type>: <Union types={["boolean", '"increasing"', '"decreasing"']} /></Type></code>
 	<Meta>Default: `true`</Meta>
 </h3>
 
@@ -189,8 +191,11 @@ want to animate number changes without conveying an overall increase or decrease
 <TrendDemo client:visible />
 
 <h3 id="continuous">
+<Match>
+	<code slot="vanilla">continuous</code>
 	<code>continuous<Type>: boolean</Type></code>
 	<Meta>Default: `false`</Meta>
+</Match>
 </h3>
 
 If set, number transitions will appear to pass through in-between numbers. Has no effect if `trend` is `false`.
@@ -217,9 +222,8 @@ that may occur in the same update. This can prevent potentially unwanted animati
 Can be set to `false` to disable all animations and finish any current ones.
 See the [input example](/examples/#input) for a usage scenario.
 
-
 <h3 id="respect-motion-preference">
-	<code>respectMotionPreference<Type>: boolean</Type></code>
+	<code><Match vanilla="respect-motion-preference" default="respectMotionPreference" /><Type>: boolean</Type></code>
 	<Meta>Default: `true`</Meta>
 </h3>
 
@@ -227,11 +231,10 @@ Can be set to `false` to animate regardless of the user's reduced motion prefere
 
 <Match vanilla>
 <h3>
-	<code>manual<Type>: boolean</Type></code>
-	<Meta>Default: `false`</Meta>
+	<code>manual</code>
 </h3>
 
-If `true`, calls to `.update()` won't trigger animations automatically. Instead, you'll need to call:
+If set, calls to `.update()` won't trigger animations automatically. Instead, you'll need to call:
 
 ```ts
 flow.willUpdate()
@@ -246,9 +249,7 @@ See the [group example](/examples/#group) for a demo.
 
 <Match>
 <Fragment slot="vanilla">
----
-<Heading value="Attributes" />
-<h3><code>data-will-change<Type>: boolean</Type></code></h3>
+<h3><code>data-will-change</code></h3>
 </Fragment>
 <h3>
 	<code>willChange<Type>: boolean</Type></code>
@@ -275,9 +276,9 @@ Note that "excessive use of `will-change` will result in excessive memory use" (
 <h3><code><Match react="onAnimationsStart" vue="animationsstart" svelte="animationsstart" vanilla="animationsstart" /><Type>: (e: CustomEvent) => void</Type></code></h3>
 
 Triggered when update animations start.
-<Match vue react vanilla>
+<Match><Fragment slot="svelte" />{/* Svelte 4 ver doesn't re-expose animationstart */}
 Not to be confused with the built-in
-<Match react>`onAnimationStart`</Match><Match vue vanilla>[`animationstart` event](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationstart_event)</Match>, which
+<Match><Fragment slot="react">`onAnimationStart`</Fragment>[`animationstart` event](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationstart_event)</Match>, which
 would trigger for animations on the <Comp/> element itself.
 </Match>
 
@@ -343,19 +344,28 @@ and (optionally) the user is [okay with motion](https://developer.mozilla.org/en
 ---
 <Heading value="SSR" />
 
-NumberFlow provides a `.renderToString()` method for SSR purposes. For example, with [Astro](https://astro.build):
+NumberFlow provides a `renderToString()` method for SSR purposes. For example, with [Astro](https://astro.build):
 ```astro
 ---
 import { renderToString } from 'number-flow'
 ---
-<number-flow>
-	{renderToString(123, { locales: 'en-US' })}
-</number-flow>
+<number-flow
+	locales='"en-US"'
+	format='{ "notation": "compact" }'
+	set:html={renderToString(123, {
+		// Make sure to pass in the locales and format options
+		// you're using:
+		locales: 'en-US',
+		format: { notation: 'compact' }
+	})}
+/>
 
 <script>
-	// To hydrate the component, call .update() with the same value
+	import 'number-flow'
+	
 	const flow = document.querySelector('number-flow')
-	flow.update(123, { locales: 'en-US' })
+	// The first .update() call hydrates the component:
+	flow.update(123)
 </script>
 ```
 </Match>
