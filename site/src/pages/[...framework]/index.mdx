@@ -84,14 +84,14 @@ Subsequent calls to `.update()` will trigger animations.
 ---
 
 <Match>
-<Heading slot="vanilla" value="Attributes" />
+<Heading slot="vanilla" value="Properties" />
 <Heading value="Props" />
 </Match>
-
+{/*
 <Match vanilla>
-<Note>All custom attributes can also be set as camelCased properties on the <Comp/> element.</Note>
+<Note>`boolean`, `number`, or `string` properties can also be set as attributes on the <Comp/> element.</Note>
 </Match>
-
+*/}
 <h3 id="format">
 	<code>format<Type>: <Link href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" className="text-[unset]">Intl.NumberFormatOptions</Link></Type></code>
 </h3>
@@ -114,8 +114,8 @@ The format options passed to the internal `Intl.NumberFormat` instance.
 ```
 </Match>
 <Match vanilla>
-```html
-<number-flow format="{ notation: 'compact' }"></number-flow>
+```js
+flow.format = { notation: 'compact' }
 ```
 </Match>
 
@@ -124,12 +124,6 @@ The format options passed to the internal `Intl.NumberFormat` instance.
 </h3>
 
 The locales passed to the internal `Intl.NumberFormat` instance.
-
-<Match vanilla>
-```html
-<number-flow locales="en-US"></number-flow>
-```
-</Match>
 
 ### Timings
 
@@ -188,17 +182,20 @@ There are three <Match vanilla="attributes" default="props" /> to customize the 
 ```
 </Match>
 <Match vanilla>
-```html
-<!--
-	`transform-timing` is used for layout-related transforms.  
-	`spin-timing` is used for the digit spin animations. It will fall back to `transform-timing` if unset.  
-	`opacity-timing` is used for fading characters in or out.
--->
-<number-flow
-	transform-timing="{ duration: 700, easing: 'linear(...)' }"
-	spin-timing="{ duration: 700, easing: 'linear(...)' }"
-	opacity-timing="{ duration: 350, easing: 'ease-out' }"
->
+```js
+// Used for layout-related transforms:
+flow.transformTiming = {
+	duration: 700, easing: 'linear(...)'
+}
+// Used for the digit spin animations.
+// Will fall back to `transformTiming` if unset:
+flow.spinTiming = {
+	duration: 700, easing: 'linear(...)'
+}
+// Used for fading in/out characters:
+flow.opacityTiming = {
+	duration: 350, easing: 'ease-out'
+}
 ```
 </Match>
 </TimingsDemo>
@@ -207,22 +204,21 @@ For spring-based easings, I'd recommend [Kevin Grajeda's generator](https://www.
 or [easing.dev](https://www.easing.dev/).
 
 <h3>
-	<code>trend<Type>: <Union types={['number', '(prev: number, value: number) => number']} /></Type></code>
-	<Meta>Default: `(prev, value) => value - prev`</Meta>
+	<code>trend<Type>: <Union types={['number', '(oldValue: number, value: number) => number']} /></Type></code>
+	<Meta>Default: `(oldValue, value) => value - oldValue`</Meta>
 </h3>
 
-Controls the direction of the digits.
+Controls the direction of the digits. If `trend` is or returns
 
-- `+number:` The digits always go up.
-- `0:` No overall trend; each digit goes up if it increases and down if it decreases. This can be useful if you
-want to animate updates without conveying an overall increase or decrease ([example](https://x.com/pontusab/status/1825941664189526067)).
-- `-number:` The digits always go down.
+- a **positive** number, the digits always go up.
+- `0`, each digit goes up if it increases and down if it decreases. This can be useful if you
+don't want to convey a trend ([example](https://x.com/pontusab/status/1825941664189526067)).
+- a **negative** number, the digits always go down.
 
 <TrendDemo client:visible />
 
 <h3 id="continuous">
 <Match>
-	<code slot="vanilla">continuous</code>
 	<code>continuous<Type>: boolean</Type></code>
 	<Meta>Default: `false`</Meta>
 </Match>
@@ -230,7 +226,7 @@ want to animate updates without conveying an overall increase or decrease ([exam
 
 If set, number transitions will appear to pass through in-between numbers. Has no effect if `trend` is `0`.
 
-<ContinuousDemo client:visible />
+<ContinuousDemo client:visible/>
 
 <Match react>
 <h3>
@@ -253,7 +249,7 @@ Can be set to `false` to disable all animations and finish any current ones.
 See the [input example](/examples/#input) for a usage scenario.
 
 <h3 id="respect-motion-preference">
-	<code><Match vanilla="respect-motion-preference" default="respectMotionPreference" /><Type>: boolean</Type></code>
+	<code>respectMotionPreference<Type>: boolean</Type></code>
 	<Meta>Default: `true`</Meta>
 </h3>
 
@@ -261,7 +257,8 @@ Can be set to `false` to animate regardless of the user's reduced motion prefere
 
 <Match vanilla>
 <h3>
-	<code>manual</code>
+	<code>manual<Type>: boolean</Type></code>
+	<Meta>Default: `false`</Meta>
 </h3>
 
 If set, calls to `.update()` won't trigger animations automatically. Instead, you'll need to call:
@@ -279,6 +276,8 @@ See the [group example](/examples/#group) for a demo.
 
 <Match>
 <Fragment slot="vanilla">
+---
+<Heading value="Attributes"/>
 <h3><code>data-will-change</code></h3>
 </Fragment>
 <h3>
@@ -380,8 +379,6 @@ NumberFlow provides a `renderInnerHTML()` method for SSR purposes. For example, 
 import { renderInnerHTML } from 'number-flow'
 ---
 <number-flow
-	locales="en-US"
-	format="{ notation: 'compact' }"
 	set:html={renderInnerHTML(123, {
 		// Make sure to pass in the locales and format options
 		// you're using:
@@ -394,6 +391,8 @@ import { renderInnerHTML } from 'number-flow'
 	import 'number-flow'
 
 	const flow = document.querySelector('number-flow')
+	flow.locales = 'en-US'
+	flow.format = { notation: 'compact' }
 	// The first .update() call hydrates the component:
 	flow.update(123)
 </script>

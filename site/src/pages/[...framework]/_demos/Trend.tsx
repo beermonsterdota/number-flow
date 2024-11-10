@@ -8,7 +8,7 @@ import Demo, {
 } from '@/components/Demo'
 import NumberFlow from '@number-flow/react'
 import useCycle from '@/hooks/useCycle'
-import type { KeyOfMap } from '@/lib/types'
+import type { KeyOfMap, Rename } from '@/lib/types'
 
 const NUMBERS = [20, 19]
 
@@ -19,7 +19,10 @@ const OPTIONS = new Map([
 	['-1', -1]
 ])
 
-export default function DemoHOC({ ...rest }: Omit<DemoProps, 'children' | 'code'>) {
+export default function DemoHOC({
+	children,
+	...rest
+}: Rename<Omit<DemoProps, 'children'>, 'code', 'children'>) {
 	const [value, cycleValue] = useCycle(NUMBERS)
 
 	const [label, setLabel] = React.useState<KeyOfMap<typeof OPTIONS>>('default')
@@ -27,6 +30,7 @@ export default function DemoHOC({ ...rest }: Omit<DemoProps, 'children' | 'code'
 
 	return (
 		<Demo
+			code={children}
 			{...rest}
 			title={
 				<DemoMenu>
