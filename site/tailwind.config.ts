@@ -44,7 +44,7 @@ export default {
 				px: '0 0 0 1px rgb(0 0 0 / 0.05)'
 			},
 			colors: {
-				accent: 'var(--accent)',
+				accent: 'rgb(var(--accent))',
 				zinc: {
 					125: '##f0f0f1',
 					150: '#ececee',
@@ -88,7 +88,8 @@ export default {
 						'line-height': '1.7',
 
 						a: {
-							'@apply link-underline font-normal': {}
+							'font-weight': 'unset',
+							'@apply link-underline': {}
 						},
 
 						hr: {

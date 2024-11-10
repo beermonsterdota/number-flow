@@ -17,6 +17,7 @@ import Type from '@/components/Type.astro'
 import Heading from '@/components/Heading.astro'
 import Union from '@/components/Union.astro'
 import Link from '@/components/Link.astro'
+import Note from '@/components/Note.astro'
 export { getStaticPaths } from '@/lib/framework'
 export const components = {a: Link, pre: Pre}
 
@@ -31,11 +32,7 @@ export const components = {a: Link, pre: Pre}
 // Basic usage
 import NumberFlow from '@number-flow/react'
 
-<NumberFlow
-	value={value}
-	format={{ notation: 'compact' }} // Intl.NumberFormat options
-	locales="en-US" // Intl.NumberFormat locales
-/>
+<NumberFlow value={123} />
 ```
 </Match>
 <Match vue>
@@ -45,11 +42,7 @@ import NumberFlow from '@number-flow/react'
 import NumberFlow from '@number-flow/vue'
 </script>
 <template>
-	<NumberFlow
-		:value="value"
-		:format="{ notation: 'compact' } /* Intl.NumberFormat options */"
-		:locales="'en-US' /* Intl.NumberFormat locales */"
-	/>
+	<NumberFlow :value="123" />
 </template>
 ```
 </Match>
@@ -60,35 +53,33 @@ import NumberFlow from '@number-flow/vue'
 import NumberFlow from '@number-flow/svelte'
 </script>
 
-<NumberFlow
-	value={value}
-	format={{ /* Intl.NumberFormat options */ }}
-	locales="en-US"
-/>
+<NumberFlow value={123} />
 ```
 </Match>
 <Match vanilla>
 ```html
 <!-- Basic usage -->
-<number-flow
-	locales='"en-US"'
-	format='{ "notation": "compact" }'
-></number-flow>
+<number-flow></number-flow>
 
 <script type="module">
 	import 'number-flow' // only needed once per bundle
+	// If not using a bundler:
+	// import 'https://esm.sh/number-flow'
 
 	const flow = document.querySelector('number-flow')
-	// Sets the initial value. Subsequent calls to .update()
-	// will trigger animations:
+	// Sets the initial value:
 	flow.update(123)
 </script>
 ```
 </Match>
 </div>
 
-See [MDN's `Intl.NumberFormat` reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#parameters)
-for a full list of `locales` and `format` options.
+<Match>
+<Fragment slot="vanilla">
+Subsequent calls to `.update()` will trigger animations.
+</Fragment>
+<Comp /> will automatically transition when the `value` prop changes.
+</Match>
 
 ---
 
@@ -97,8 +88,48 @@ for a full list of `locales` and `format` options.
 <Heading value="Props" />
 </Match>
 
-NumberFlow accepts additional <Match vanilla="attributes" default="props" /> to customize its transitions<Match vanilla="." default=":"/>
-<Match vanilla>Make sure to use JSON strings for all of them. They're also available as camelCased properties in JS:</Match>
+<Match vanilla>
+<Note>All custom attributes can also be set as camelCased properties on the <Comp/> element.</Note>
+</Match>
+
+<h3 id="format">
+	<code>format<Type>: <Link href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options" className="text-[unset]">Intl.NumberFormatOptions</Link></Type></code>
+</h3>
+
+The format options passed to the internal `Intl.NumberFormat` instance.
+
+<Match react>
+```jsx
+<NumberFlow format={{ notation: 'compact' }} value={value} />
+```
+</Match>
+<Match vue>
+```vue
+<NumberFlow format="{ notation: 'compact' }" :value />
+```
+</Match>
+<Match svelte>
+```svelte
+<NumberFlow format={{ notation: 'compact' }} {value} />
+```
+</Match>
+<Match vanilla>
+```html
+<number-flow format="{ notation: 'compact' }"></number-flow>
+```
+</Match>
+
+<h3 id="locales">
+<code>locales<Type>: <Link href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#locales" className="text-[unset]">Intl.LocalesArgument</Link></Type></code>
+</h3>
+
+The locales passed to the internal `Intl.NumberFormat` instance.
+
+<Match vanilla>
+```html
+<number-flow locales="en-US"></number-flow>
+```
+</Match>
 
 ### Timings
 
@@ -164,9 +195,9 @@ There are three <Match vanilla="attributes" default="props" /> to customize the 
 	`opacity-timing` is used for fading characters in or out.
 -->
 <number-flow
-	transform-timing='{ "duration": 700, "easing": "linear(...)" }'
-	spin-timing='{ "duration": 700, "easing": "linear(...)" }'
-	opacity-timing='{ "duration": 350, "easing": "ease-out" }'
+	transform-timing="{ duration: 700, easing: 'linear(...)' }"
+	spin-timing="{ duration: 700, easing: 'linear(...)' }"
+	opacity-timing="{ duration: 350, easing: 'ease-out' }"
 >
 ```
 </Match>
@@ -176,17 +207,16 @@ For spring-based easings, I'd recommend [Kevin Grajeda's generator](https://www.
 or [easing.dev](https://www.easing.dev/).
 
 <h3>
-	<code>trend<Type>: <Union types={["boolean", '"increasing"', '"decreasing"']} /></Type></code>
-	<Meta>Default: `true`</Meta>
+	<code>trend<Type>: <Union types={['number', '(prev: number, value: number) => number']} /></Type></code>
+	<Meta>Default: `(prev, value) => value - prev`</Meta>
 </h3>
 
 Controls the direction of the digits.
 
-- `true:` The digits go up if the number increases, and down if the number decreases.
-- `false:` Ignores the trend of the number; each digit goes up if it increases and down if it decreases. This can be useful if you
-want to animate number changes without conveying an overall increase or decrease ([example](https://x.com/pontusab/status/1825941664189526067)).
-- `"increasing":` The digits always go up.
-- `"decreasing":` The digits always go down.
+- `+number:` The digits always go up.
+- `0:` No overall trend; each digit goes up if it increases and down if it decreases. This can be useful if you
+want to animate updates without conveying an overall increase or decrease ([example](https://x.com/pontusab/status/1825941664189526067)).
+- `-number:` The digits always go down.
 
 <TrendDemo client:visible />
 
@@ -198,7 +228,7 @@ want to animate number changes without conveying an overall increase or decrease
 </Match>
 </h3>
 
-If set, number transitions will appear to pass through in-between numbers. Has no effect if `trend` is `false`.
+If set, number transitions will appear to pass through in-between numbers. Has no effect if `trend` is `0`.
 
 <ContinuousDemo client:visible />
 
@@ -277,9 +307,9 @@ Note that "excessive use of `will-change` will result in excessive memory use" (
 
 Triggered when update animations start.
 <Match><Fragment slot="svelte" />{/* Svelte 4 ver doesn't re-expose animationstart */}
-Not to be confused with the built-in
+(Not to be confused with the built-in
 <Match><Fragment slot="react">`onAnimationStart`</Fragment>[`animationstart` event](https://developer.mozilla.org/en-US/docs/Web/API/Element/animationstart_event)</Match>, which
-would trigger for animations on the <Comp/> element itself.
+would trigger for animations on the <Comp/> element itself.)
 </Match>
 
 <h3><code><Match react="onAnimationsFinish" vue="animationsfinish" svelte="animationsfinish" vanilla="animationsfinish" /><Type>: (e: CustomEvent) => void</Type></code></h3>
@@ -292,7 +322,7 @@ Triggered when update animations finish.
 <Heading value="Styling" />
 </Match>
 
-There's some CSS properties you can use to style the component:
+There are some CSS properties you can use to style the component:
 
 <h3>
 	<code>{'--'}number-flow-mask-[height|width]<Type>: {'<length>'}</Type></code>
@@ -344,15 +374,15 @@ and (optionally) the user is [okay with motion](https://developer.mozilla.org/en
 ---
 <Heading value="SSR" />
 
-NumberFlow provides a `renderToString()` method for SSR purposes. For example, with [Astro](https://astro.build):
+NumberFlow provides a `renderInnerHTML()` method for SSR purposes. For example, with [Astro](https://astro.build):
 ```astro
 ---
-import { renderToString } from 'number-flow'
+import { renderInnerHTML } from 'number-flow'
 ---
 <number-flow
-	locales='"en-US"'
-	format='{ "notation": "compact" }'
-	set:html={renderToString(123, {
+	locales="en-US"
+	format="{ notation: 'compact' }"
+	set:html={renderInnerHTML(123, {
 		// Make sure to pass in the locales and format options
 		// you're using:
 		locales: 'en-US',
@@ -362,7 +392,7 @@ import { renderToString } from 'number-flow'
 
 <script>
 	import 'number-flow'
-	
+
 	const flow = document.querySelector('number-flow')
 	// The first .update() call hydrates the component:
 	flow.update(123)

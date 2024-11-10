@@ -1,0 +1,13 @@
+---
+import { Info } from 'lucide-react'
+---
+
+<!-- <p class="bg-accent/10 border-accent/30 dark:border-accent/10 rounded-lg border p-5"> -->
+<div
+	class="border-faint py-4.5 flex gap-3 rounded-lg border bg-zinc-50 px-5 text-sm dark:bg-zinc-900"
+>
+	<Info className="mt-0.5 size-5" />
+	<div class="prose-zinc prose-sm prose dark:prose-invert">
+		<slot />
+	</div>
+</div>

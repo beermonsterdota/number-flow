@@ -6,15 +6,24 @@ import Demo, {
 	DemoMenuItems,
 	type DemoProps
 } from '@/components/Demo'
-import NumberFlow, { type Trend } from '@number-flow/react'
+import NumberFlow from '@number-flow/react'
 import useCycle from '@/hooks/useCycle'
+import type { KeyOfMap } from '@/lib/types'
 
 const NUMBERS = [20, 19]
+
+const OPTIONS = new Map([
+	['default', undefined],
+	['+1', 1],
+	['0', 0],
+	['-1', -1]
+])
 
 export default function DemoHOC({ ...rest }: Omit<DemoProps, 'children' | 'code'>) {
 	const [value, cycleValue] = useCycle(NUMBERS)
 
-	const [trend, setTrend] = React.useState<Trend>(true)
+	const [label, setLabel] = React.useState<KeyOfMap<typeof OPTIONS>>('default')
+	const trend = OPTIONS.get(label)
 
 	return (
 		<Demo
@@ -23,21 +32,14 @@ export default function DemoHOC({ ...rest }: Omit<DemoProps, 'children' | 'code'
 				<DemoMenu>
 					<DemoMenuButton className="gap-1">
 						<code className="text-muted">trend:</code>
-						<code className="font-semibold">{JSON.stringify(trend)}</code>
+						<code className="font-semibold">{label}</code>
 					</DemoMenuButton>
 					<DemoMenuItems>
-						<DemoMenuItem onClick={() => setTrend(true)} disabled={trend === true}>
-							<code className="font-semibold">true</code>
-						</DemoMenuItem>
-						<DemoMenuItem onClick={() => setTrend(false)} disabled={trend === false}>
-							<code className="font-semibold">false</code>
-						</DemoMenuItem>
-						<DemoMenuItem onClick={() => setTrend('increasing')} disabled={trend === 'increasing'}>
-							<code className="font-semibold">"increasing"</code>
-						</DemoMenuItem>
-						<DemoMenuItem onClick={() => setTrend('decreasing')} disabled={trend === 'decreasing'}>
-							<code className="font-semibold">"decreasing"</code>
-						</DemoMenuItem>
+						{Array.from(OPTIONS.keys()).map((l) => (
+							<DemoMenuItem onClick={() => setLabel(l)} disabled={label === l}>
+								<code className="font-semibold">{l}</code>
+							</DemoMenuItem>
+						))}
 					</DemoMenuItems>
 				</DemoMenu>
 			}

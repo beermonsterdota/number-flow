@@ -9,27 +9,27 @@ export const FRAMEWORKS = {
 	react: {
 		name: 'React',
 		sandbox: 'https://codesandbox.io/p/sandbox/r47dcw',
-		lightColor: '#0A7EA4',
-		darkColor: '#58C4DC'
+		lightColor: '10 126 164',
+		darkColor: '88 196 220'
 	},
 	vue: {
 		name: 'Vue',
 		sandbox: 'https://codesandbox.io/p/devbox/number-flow-vue-7t7y6y',
-		lightColor: '#42B883',
-		darkColor: '#42B883'
+		lightColor: '66 184 131',
+		darkColor: '66 184 131'
 	},
 	svelte: {
 		name: 'Svelte',
 		sandbox:
 			'https://codesandbox.io/p/devbox/number-flow-svelte-xshsw4?file=%2Fsrc%2Froutes%2F%2Bpage.svelte',
-		lightColor: '#FF3E00',
-		darkColor: '#F96844'
+		lightColor: '255 62 0',
+		darkColor: '249 104 68'
 	},
 	vanilla: {
 		name: 'Vanilla',
 		sandbox: '',
-		lightColor: '#F7DF1E',
-		darkColor: '#F7DF1E'
+		lightColor: '247 223 30',
+		darkColor: '247 223 30'
 	}
 } satisfies Record<string, FrameworkData>
 
