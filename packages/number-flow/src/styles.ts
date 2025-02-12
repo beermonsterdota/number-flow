@@ -210,6 +210,7 @@ const styles = css`
 		/* Technically we just need var(--offset)*100%, but clamping should reduce the layer size: */
 		--y: clamp(-100%, var(--offset) * 100%, 100%);
 		transform: translateY(var(--y));
+		line-height: --var(--number-flow-char-height);
 	}
 
 	.digit.show-side .digit__num {
