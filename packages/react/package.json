@@ -1,5 +1,5 @@
 {
-	"name": "@number-flow/react",
+	"name": "@beermonster/number-flow-react",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -54,7 +54,7 @@
 	},
 	"dependencies": {
 		"esm-env": "^1.1.4",
-		"number-flow": "workspace:*"
+		"@beermonster/number-flow": "workspace:*"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.48.0",

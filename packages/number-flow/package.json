@@ -1,5 +1,5 @@
 {
-	"name": "number-flow",
+	"name": "@beermonster/number-flow",
 	"publishConfig": {
 		"access": "public"
 	},

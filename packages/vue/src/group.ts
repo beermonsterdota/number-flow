@@ -1,4 +1,4 @@
-import type { NumberFlowLite, formatToData } from 'number-flow'
+import type { NumberFlowLite, formatToData } from '@beermonster/number-flow'
 import type { InjectionKey, Ref, ComputedRef } from 'vue'
 
 export type RegisterWithGroup = (

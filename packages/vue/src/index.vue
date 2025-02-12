@@ -6,7 +6,7 @@ import {
 	formatToData,
 	NumberFlowLite,
 	type Props as NumberFlowProps
-} from 'number-flow'
+} from '@beermonster/number-flow'
 import { computed, inject, ref } from 'vue'
 import { key as groupKey } from './group'
 import { BROWSER } from 'esm-env'

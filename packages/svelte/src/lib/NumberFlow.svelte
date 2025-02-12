@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { NumberFlowLite, define, type Data } from 'number-flow'
+	import { NumberFlowLite, define, type Data } from '@beermonster/number-flow'
 	// Svelte only supports setters, but Svelte 4 didn't pick up inherited ones:
 	export class NumberFlowElement extends NumberFlowLite {
 		set __svelte_manual(manual: boolean) {
@@ -29,7 +29,7 @@
 		renderInnerHTML,
 		formatToData,
 		type Props as NumberFlowProps
-	} from 'number-flow'
+	} from '@beermonster/number-flow'
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { writable } from 'svelte/store'
 	import { getGroupContext } from './group.js'

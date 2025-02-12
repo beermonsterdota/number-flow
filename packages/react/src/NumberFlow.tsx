@@ -15,7 +15,7 @@ import {
 	prefersReducedMotion as _prefersReducedMotion,
 	canAnimate as _canAnimate,
 	define
-} from 'number-flow'
+} from '@beermonster/number-flow'
 import { BROWSER } from 'esm-env'
 
 const REACT_MAJOR = parseInt(React.version.match(/^(\d+)\./)?.[1]!)

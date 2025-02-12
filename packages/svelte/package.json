@@ -1,5 +1,5 @@
 {
-	"name": "@number-flow/svelte",
+	"name": "@beermonster/number-flow-svelte",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -54,7 +54,7 @@
 	},
 	"dependencies": {
 		"esm-env": "^1.1.4",
-		"number-flow": "workspace:*"
+		"@beermonster/number-flow": "workspace:*"
 	},
 	"peerDependencies": {
 		"svelte": "^4 || ^5"

@@ -4,12 +4,12 @@ import {
 	canAnimate as _canAnimate,
 	define,
 	prefersReducedMotion
-} from 'number-flow'
+} from '@beermonster/number-flow'
 
 export { default as NumberFlowGroup } from './NumberFlowGroup.vue'
 
-export type { Value, Format, Trend } from 'number-flow'
-export * from 'number-flow/plugins'
+export type { Value, Format, Trend } from '@beermonster/number-flow'
+export * from '@beermonster/number-flow/plugins'
 export { NumberFlowElement }
 
 // In case we ever need a subclass:

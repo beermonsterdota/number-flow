@@ -1,5 +1,5 @@
 {
-	"name": "@number-flow/vue",
+	"name": "@beermonster/number-flow-vue",
 	"type": "module",
 	"publishConfig": {
 		"access": "public"
@@ -50,7 +50,7 @@
 	},
 	"dependencies": {
 		"esm-env": "^1.1.4",
-		"number-flow": "workspace:*"
+		"@beermonster/number-flow": "workspace:*"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.48.0",
