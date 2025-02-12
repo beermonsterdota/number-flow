@@ -2,7 +2,7 @@
 	import NumberFlow, { NumberFlowGroup, NumberFlowElement, continuous } from '$lib/index.js'
 	import { afterUpdate, tick } from 'svelte'
 
-	const initialValue = 42
+	const initialValue = 0
 
 	let value = initialValue
 	let el1: NumberFlowElement | undefined
@@ -20,9 +20,16 @@
 		// 	})
 		// }
 	})
-	// setInterval(() => {
-	// 	value += 1
-	// }, 1000)
+	setTimeout(() => {
+		value = 322
+
+		setInterval(() => {
+			value = value
+		}, 1)
+		setInterval(() => {
+			value += 1
+		}, 1000)
+	}, 2000)
 </script>
 
 <div>
@@ -58,7 +65,7 @@
 			showSideDigits={true}
 			style="--number-flow-mask-height: .3em"
 		/>
-		<NumberFlow
+		<!-- <NumberFlow
 			bind:el={el2}
 			{value}
 			respectMotionPreference={false}
@@ -68,7 +75,7 @@
 			transformTiming={{ easing: 'linear', duration: 500 }}
 			spinTiming={{ easing: 'linear', duration: 800 }}
 			opacityTiming={{ easing: 'linear', duration: 500 }}
-		/>
+		/> -->
 	</NumberFlowGroup>
 </div>
 <button on:click={() => (value = 100 + Math.random() * 99)}>Change and pause</button>

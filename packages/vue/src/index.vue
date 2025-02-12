@@ -89,7 +89,7 @@ register?.(el, data)
 		data-allow-mismatch
 		@animationsstart="emit('animationsstart')"
 		@animationsfinish="emit('animationsfinish')"
-		:show-side-digits
+		:showSideDigits
 		:data
 	/>
 </template>

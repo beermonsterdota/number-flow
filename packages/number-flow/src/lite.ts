@@ -505,6 +505,10 @@ class AnimatePresence {
 		{ onRemove, animateIn = false }: AnimatePresenceProps = {}
 	) {
 		this.el.classList.add('animate-presence')
+
+		if (this.flow.showSideDigits) {
+			this.el.classList.add('show-side')
+		}
 		// This craziness is the only way I could figure out how to get the opacity
 		// accumulation to work in all browsers. Accumulating -1 onto opacity directly
 		// failed in both FF and Safari, and setting a delta to -1 still failed in FF
@@ -618,9 +622,6 @@ export class Digit extends Char<KeyedDigitPart> {
 
 		super(section, value, el, props)
 
-		if (this.flow.showSideDigits) {
-			this.el.classList.add('show-side')
-		}
 		this._numbers = numbers
 		this.length = length
 	}
@@ -783,6 +784,7 @@ class Sym extends Char<KeyedSymbolPart> {
 					textContent: value
 				})
 				this.el.appendChild(newVal)
+
 				this._children.set(
 					value,
 					new AnimatePresence(this.flow, newVal, {
